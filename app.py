@@ -1,8 +1,9 @@
-import sys, requests, json
+#!/usr/bin/python3
+import sys, requests, json, os
 from bs4 import BeautifulSoup
 from decimal import Decimal
 
-config = json.load(open('config.json'))
+config = json.load(open(os.path.join(os.path.split(os.path.abspath(__file__))[0], 'config.json')))
 baseUrl = config["quoteUrl"]
 quoteList = config["quoteList"]
 #quoteList = ['GIB', 'xauusd=X', 'IJR']
@@ -13,8 +14,10 @@ def deleteLastLine():
     sys.stdout.write('\x1b[2K')
 
 def displayStatus():
+    if (idx != 0):
+        deleteLastLine()
+        
     percentDone = str(round((idx / len(quoteList)) * 100))
-    deleteLastLine()
     print ('Loading...' + percentDone + '%')
 
 def getQuote(symbol):    
