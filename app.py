@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import json, os
+from operator import attrgetter
 from services.quotes import Quotes
 from services.mySqlDatabase import MySqlDatabase
 from models.securities import Securities
@@ -22,6 +23,8 @@ for q in securities.commodities:
 	commodityData = Quotes(config).getCommodityQuote(q)
 	quoteData.append(commodityData)
 
-for	q in quoteData:
+quoteData.sort(key=lambda x: x.symbol)
+
+for q in quoteData:
 	print('{0}:\t{1}  \t{2}'.format(q.symbol, round(q.price, 3), q.date.strftime('%m/%d/%Y %I:%M %p')))
 	
