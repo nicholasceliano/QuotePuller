@@ -1,45 +1,27 @@
 #!/usr/bin/python3
-import sys, requests, json, os
-from bs4 import BeautifulSoup
-from decimal import Decimal
+import json, os
+from services.quotes import Quotes
+from services.mySqlDatabase import MySqlDatabase
+from models.securities import Securities
 
 config = json.load(open(os.path.join(os.path.split(os.path.abspath(__file__))[0], 'config.json')))
-baseUrl = config["quoteUrl"]
-quoteList = config["quoteList"]
-#quoteList = ['GIB', 'xauusd=X', 'IJR']
-quoteResults = []
 
-def deleteLastLine():
-    sys.stdout.write('\x1b[1A')
-    sys.stdout.write('\x1b[2K')
+spResults = MySqlDatabase(config["gnucash"]).storedProc('getAllStockValues')
 
-def displayStatus():
-    if (idx != 0):
-        deleteLastLine()
-        
-    percentDone = str(round((idx / len(quoteList)) * 100))
-    print ('Loading...' + percentDone + '%')
+securities = Securities([], [])
 
-def getQuote(symbol):    
-    url = baseUrl + q 
-    r = requests.get(url = url, params = {})
+for a in spResults:
+	if a[1] == 1: # Commodity Indicator
+		securities.commodities.append(a[0])
+	elif a[1] == 0: # Non-Commodity
+		securities.stocks.append(a[0])
+	
+quoteData = Quotes(config).getBatchQuotes(','.join(securities.stocks))
 
-    soup = BeautifulSoup(r.text, 'html.parser')
-    quoteDiv = soup.find('div', {'id': 'quote-header-info'})
-    quoteValue = quoteDiv.find_all('span')[1].text.replace(',', '')
+for q in securities.commodities:
+	commodityData = Quotes(config).getCommodityQuote(q)
+	quoteData.append(commodityData)
 
-    quoteValDec = Decimal(quoteValue)
-    quoteValue = round(quoteValDec, 2)
-
-    quoteResults.append('%s: %s' % (q, quoteValue))
-
-for idx, q in enumerate(quoteList):
-    displayStatus()
-
-    try:
-        getQuote(q)
-    except:
-        print('Error loading quote for %s' % (q))
-
-deleteLastLine()
-print(*quoteResults, sep = '\n')
+for	q in quoteData:
+	print('{0}:\t{1}  \t{2}'.format(q.symbol, round(q.price, 3), q.date.strftime('%m/%d/%Y %I:%M %p')))
+	

@@ -1,0 +1,6 @@
+# dependencies
+/__pycache__
+/services/__pycache__
+/models/__pycache__
+/.vscode
+config.json

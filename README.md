@@ -1,2 +1,2 @@
 # QuotePuller
-Screenscrapes quotes from Yahoo Finance since they disabled their API.
+Gets quotes data from AlphaVantage API. Pulls Quote Symbols/Types from local GNUCash instance.
