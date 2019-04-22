@@ -1,0 +1,10 @@
+{
+    "gnucash": {
+		"host": "",
+		"user": "",
+		"password": "",
+		"database": ""
+	},
+	"alphaVantageAPIUri": "",
+	"alphaVantageAPIKey": ""
+}
