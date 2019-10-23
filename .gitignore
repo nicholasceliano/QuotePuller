@@ -1,6 +1,9 @@
 # dependencies
-/__pycache__
-/services/__pycache__
-/models/__pycache__
+/quotepuller/__pycache__
+/quotepuller/services/__pycache__
+/quotepuller/models/__pycache__
 /.vscode
 config.json
+/build
+/dist
+/QuotePuller.egg-info

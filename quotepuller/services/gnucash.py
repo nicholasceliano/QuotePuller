@@ -1,5 +1,5 @@
 import requests, json, uuid
-from models.gnucashPrice import GnucashPrice
+from quotepuller.models.gnucashPrice import GnucashPrice
 
 class GNUCash:
 	def __init__(self, mysql):

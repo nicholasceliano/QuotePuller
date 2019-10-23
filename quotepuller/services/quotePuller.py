@@ -1,5 +1,5 @@
-from models.securities import Securities
-from models.gnucashStockValue import GnucashStockValue
+from quotepuller.models.securities import Securities
+from quotepuller.models.gnucashStockValue import GnucashStockValue
 
 class QuotePuller:
 	gnucashStockValues = []

@@ -1,6 +1,6 @@
 
 import requests, json
-from models.securityRecord import SecurityRecord
+from quotepuller.models.securityRecord import SecurityRecord
 
 class Quotes:
 	def __init__(self, config):
