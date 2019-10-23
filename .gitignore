@@ -1,5 +1,6 @@
 # dependencies
 /quotepuller/__pycache__
+/**/*.pyc
 /quotepuller/services/__pycache__
 /quotepuller/models/__pycache__
 /.vscode

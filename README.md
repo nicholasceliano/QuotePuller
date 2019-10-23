@@ -16,3 +16,9 @@ Config.json
 	"alphaVantageAPIUri": "",
 	"alphaVantageAPIKey": ""
 }
+
+Install locally:
+- sudo pip install -e /home/pi/Documents/git/QuotePuller
+
+Run locally
+- open command and type command 'quotepuller'
