@@ -1,19 +1,23 @@
 
-import requests, json
+import requests, json, time, csv
 from quotepuller.models.securityRecord import SecurityRecord
 
 class Quotes:
 	def __init__(self, config):
 		self.apiUri = config["alphaVantageAPIUri"]
 		self.apiKey = config["alphaVantageAPIKey"]
+		self.sleepTime = 60 / config["alphaVantageReqPerMin"]
 
-	def getBatchQuotes(self, symbols):
-		r = requests.get('{0}?function=BATCH_STOCK_QUOTES&symbols={1}&apikey={2}'.format(self.apiUri, symbols, self.apiKey))
-		jsonResp = r.json()
-
+	def getQuotes(self, symbols):
 		quoteData = []
-		for q in jsonResp['Stock Quotes']:
-			quoteData.append(SecurityRecord(q['1. symbol'], q['2. price'], q['4. timestamp']))
+		symbolsList = symbols.split(',')
+		for q in symbolsList:
+			r = requests.get('{0}?function=GLOBAL_QUOTE&symbol={1}&apikey={2}'.format(self.apiUri, q, self.apiKey))
+			jsonResp = r.json()
+			print(jsonResp)
+			quote = jsonResp['Global Quote']
+			quoteData.append(SecurityRecord(quote['01. symbol'], quote['05. price'], quote['07. latest trading day']))
+			time.sleep(self.sleepTime)
 
 		return quoteData
 

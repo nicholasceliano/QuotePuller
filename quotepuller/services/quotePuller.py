@@ -30,7 +30,7 @@ class QuotePuller:
 		return securities
 
 	def __getSecuritiesDataFromAPI__(self, securities):
-		quoteData = self.quotes.getBatchQuotes(','.join(securities.stocks))
+		quoteData = self.quotes.getQuotes(','.join(securities.stocks))
 
 		for q in securities.commodities:
 			commodityData = self.quotes.getCommodityQuote(q)
