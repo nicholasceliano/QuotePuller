@@ -1,5 +1,5 @@
 
-import requests, json, time, csv
+import requests, json, time
 from quotepuller.models.securityRecord import SecurityRecord
 
 class Quotes:
@@ -11,12 +11,14 @@ class Quotes:
 	def getQuotes(self, symbols):
 		quoteData = []
 		symbolsList = symbols.split(',')
+		
 		for q in symbolsList:
 			r = requests.get('{0}?function=GLOBAL_QUOTE&symbol={1}&apikey={2}'.format(self.apiUri, q, self.apiKey))
 			jsonResp = r.json()
-			print(jsonResp)
 			quote = jsonResp['Global Quote']
-			quoteData.append(SecurityRecord(quote['01. symbol'], quote['05. price'], quote['07. latest trading day']))
+			quoteData.append(SecurityRecord(quote['01. symbol'], quote['05. price'], quote['07. latest trading day'], False))
+			percentComplete = round(len(quoteData) / len(symbolsList) * 100, 2)
+			self.printOutput(percentComplete, quote['01. symbol'])
 			time.sleep(self.sleepTime)
 
 		return quoteData
@@ -26,6 +28,10 @@ class Quotes:
 		jsonResp = r.json()
 		q = jsonResp['Realtime Currency Exchange Rate']
 
-		commodityData = SecurityRecord(q['1. From_Currency Code'], q['5. Exchange Rate'], q['6. Last Refreshed'])
-		
+		commodityData = SecurityRecord(q['1. From_Currency Code'], q['5. Exchange Rate'], q['6. Last Refreshed'], True)
+		self.printOutput(100.0, q['1. From_Currency Code'])
+
 		return commodityData
+
+	def printOutput(self, percentComplete, symbol):
+		print('{0}% - Successfully inserted {1}.'.format(percentComplete, symbol))

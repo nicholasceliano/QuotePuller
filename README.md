@@ -14,7 +14,8 @@ Config.json
 		"database": ""
 	},
 	"alphaVantageAPIUri": "",
-	"alphaVantageAPIKey": ""
+	"alphaVantageAPIKey": "",
+	"alphaVantageReqPerMin": 5
 }
 
 Install locally:
